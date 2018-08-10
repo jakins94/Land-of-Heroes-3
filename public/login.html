@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<title> Login </title>
+	<meta charset="utf-8">
+
+	<link rel="icon" type="image/png" href="sprites/favicon.png">
+	<link rel="shortcut icon" type="image/png" href="sprites/favicon.png">
+	<link rel="shortcut icon" href="sprites/favicon.ico" type="image/x-icon" />
+	<link rel="icon" href="sprites/favicon.ico" type="image/x-icon" />
+	<link rel="stylesheet" href="style/game.css">
+	<link rel="stylesheet" href="style/login.css">
+</head>
+<div id="wrapper">
+	<div id="continueBox">
+		Continue to full site
+	</div>
+	<div id="loginBox">
+		<form id="idForm" action="index.html">
+			<input style="display:none" type="text" id="playerName"/>
+			<input style="display:none" type="password" id="playerPass"/>
+			Username:
+			<input id="playerName" class="playerName" type="text" size="20" maxlength="20" autofocus>
+			Password:
+			<input id="playerPass" class="playerPass" type="password" size="20" maxlength="20">
+			<input id="submitButton" type="submit" value=" Login " onclick="setHere();">
+		</form>
+	</div>
+
+	<div id="registerBox">
+		<center><span style="position: relative; top: -15px;"><h4>Create an account</h4>
+		<hr color="" width="85%">
+		</span></center>
+		<form id="idForm" action="index.html">
+			<table id="registerTable">
+				<tr><td>
+				<b>Username:</b>
+				</td></tr>
+				<tr><td>
+				<input id="regName" name="regName" type="text" size="30" maxlength="20" autofocus>
+				</td></tr>
+				<tr><td>
+				<b>Password:</b>
+				</td></tr>
+				<tr><td>
+				<input id="regPass" name="regPass" type="password" size="30" maxlength="20">
+				</td></tr>
+				<tr><td>
+				<b>Verify Password:</b>
+				</td></tr>
+				<tr><td>
+				<input id="vPass" name="vPass" type="password" size="30" maxlength="20">
+				</td></tr>
+				<tr><td>
+				<b>Email Address: </b>
+				</td></tr>
+				<tr><td>
+				<input id="emailAddr" name="emailAddr" type="text" size="30" maxlength="50">
+				</td></tr>
+				<tr><td>
+				<b>Date of Birth:</b>
+				</td></tr>
+				<tr><td id="dob">
+				<input id="bDay" size="1" maxlength="2" placeholder="DD"> - <input id="bMonth" size="1" maxlength="2" placeholder="MM"> - <input id="bYear" size="2" maxlength="4" placeholder="YYYY">
+				</td></tr>
+				<tr><td>
+				<!-- <div class="g-recaptcha" data-sitekey="6LfNIgYTAAAAABHL-VMSBREqoA_cLnY9TR06kzkS"></div> -->
+				</td></tr>
+				<tr><td>
+				<center><input id="submitButton" type="submit" value=" Register! " onclick="setStorage();"></center>
+				</td></tr>
+			</table>
+		</form>
+	</div>
+
+	<div id="updateBox">
+		<center><span style="position: relative; top: -15px;"><h4>Updates</h4>
+		<hr color="" width="85%">
+		</span></center>
+	</div>
+</div>
+
+<script src="js/jquery-1.11.3.min.js"></script>
+<script>
+	function setStorage() {
+			
+		}
+</script>
+<script type="text/javascript">
+		$('#idForm').submit(function() {
+				sessionStorage.playerName = document.getElementsByClassName("playerName")[0].value;
+				sessionStorage.playerPass = document.getElementsByClassName("playerPass")[0].value;
+			    var form = $(this),
+			        paths = [];
+			    form.find('select').each(function() {
+			        var self = $(this),
+			            value = self.val();
+
+			        if (value)
+			            paths[paths.length] = value;
+
+			        // always disable to prevent edge cases
+			        self.prop('disabled', true);
+			    });     
+			    if (paths.length)
+			        this.action += paths.join('/')+'/';
+			    
+			    window.location = this.action;
+			    return false;
+			});
+			$("input:password").val('');
+</script>
+<!-- <script src='https://www.google.com/recaptcha/api.js'></script> -->
+</body>
+</html>
