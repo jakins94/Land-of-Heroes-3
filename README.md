@@ -7,15 +7,15 @@ The purpose of this project was to try a new style of programming for the client
 This project includes a client and server. The server uses MongoDB to hold user account information and other data later on, such as stats for randomly generated items.
 
 Current features include:
--Multiplayer
--Playable on browser for desktop and mobile devices
--User account creation, loading and saving
--Player vs Monster Combat system
--Pathfinding
--Animated players and enemies
--Chat system
--Map loading
--Map changing
+Multiplayer
+Playable on browser for desktop and mobile devices
+User account creation, loading and saving
+Player vs Monster Combat system
+Pathfinding
+Animated players and enemies
+Chat system
+Map loading
+Map changing
 
 Future planned features:
 -Player vs Player open world, full loot combat
