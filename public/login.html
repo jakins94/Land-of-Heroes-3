@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<title> Login </title>
+	<meta charset="utf-8">
+
+	<link rel="icon" type="image/png" href="sprites/favicon.png">
+	<link rel="shortcut icon" type="image/png" href="sprites/favicon.png">
+	<link rel="shortcut icon" href="sprites/favicon.ico" type="image/x-icon" />
+	<link rel="icon" href="sprites/favicon.ico" type="image/x-icon" />
+	<link rel="stylesheet" href="style/game.css">
+	<link rel="stylesheet" href="style/login.css">
+	<link rel="stylesheet" href="style/input_style.css">
+</head>
+<div id="wrapper">
+	<div class="middle">
+		<div id="loginBox">
+			<h1 id="loginHead">
+				Land of Heroes
+			</h1>
+			Enter a username and password to start your adventure!
+			<br/><br/>
+			<form id="idForm" action="index.html">
+				<input style="display:none" type="text" id="playerName"/>
+				<input style="display:none" type="password" id="playerPass"/>
+				<center>
+				Username:<br/>
+				<input id="playerName" class="playerName" type="text" size="20" maxlength="20" autofocus>
+				<br/>
+				Password:<br/>
+				<input id="playerPass" class="playerPass" type="password" size="20" maxlength="20">
+				<br/><br/>
+				<input id="submitButton" type="submit" value=" Login " onclick="setHere();">
+			</center>
+			</form>
+		</div>
+	</div>
+</div>
+
+<script src="js/jquery-1.11.3.min.js"></script>
+<script>
+	function setStorage() {
+			
+		}
+</script>
+<script type="text/javascript">
+		$('#idForm').submit(function() {
+				sessionStorage.playerName = document.getElementsByClassName("playerName")[0].value;
+				sessionStorage.playerPass = document.getElementsByClassName("playerPass")[0].value;
+			    var form = $(this),
+			        paths = [];
+			    form.find('select').each(function() {
+			        var self = $(this),
+			            value = self.val();
+
+			        if (value)
+			            paths[paths.length] = value;
+
+			        // always disable to prevent edge cases
+			        self.prop('disabled', true);
+			    });     
+			    if (paths.length)
+			        this.action += paths.join('/')+'/';
+			    
+			    window.location = this.action;
+			    return false;
+			});
+			$("input:password").val('');
+</script>
+<!-- <script src='https://www.google.com/recaptcha/api.js'></script> -->
+</body>
+</html>

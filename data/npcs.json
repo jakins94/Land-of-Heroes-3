@@ -1,0 +1,30 @@
+[
+
+{
+	"id": 257,
+	"name": "Slime",
+	"spriteName": "slime",
+	"description" : "",
+	"rotates" : true,
+	"stats" : {
+		"wanders" : true,
+		"level" : 1,
+		"maxhp" : 225,
+		"damage" : 1,
+		"defense" : 1,
+		"attackspeed" : 900,
+		"speed" : 4.5,
+		"viewdistance" : 100,
+		"aggrodistance" : 35,
+		"attackrange" : 64,
+		"experience" : 4,
+		"baseexp" : 40,
+		"respawn" : 15000
+	},
+	"npcSize" : {
+		"width" : 64,
+		"height" : 50
+	}
+}
+
+]
