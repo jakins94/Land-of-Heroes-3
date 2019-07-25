@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # What is Land of Heroes?
 Land of Heroes is a work in progress Massively Multiplayer Online Role Playing Game ("MMORPG") that runs in the browser using the Phaser JavaScript engine to run on browsers on both desktop computers and mobile devices and is cross-compatible, and is a solo project started in 2018. NodeJS is used as the server, and MongoDB as the database.
 
@@ -12,7 +11,7 @@ Features include:
 -Chat system
 -Map loading
 -Map changing
-=======
+
 # Land of Heroes
 
 Land of Heroes is a work in progress Massively Multiplayer Online Role Playing Game ("MMORPG") that runs in the browser using the Phaser.io JavaScript game framework to run on browsers on both desktop computers and mobile devices and is cross-compatible, and is a solo project started in 2018. Node.js is used as the server, and MongoDB as the database.
@@ -21,7 +20,7 @@ The purpose of this project was to try a new style of programming for the client
 
 This project includes a client and server. The server uses MongoDB to hold user account information and other data later on, such as stats for randomly generated items.
 
-Current features include:  
+#Current features include:  
 -Multiplayer  
 -Playable on browser for desktop and mobile devices  
 -User account creation, loading and saving  
@@ -32,7 +31,7 @@ Current features include:
 -Map loading  
 -Map changing  
 
-Future planned features:  
+#Future planned features:  
 -Player vs Player open world, full loot combat  
 -Loot generation  
 -Inventory and equipment systems  
@@ -44,4 +43,3 @@ Future planned features:
 -Many different environments, enemies and boss fights :)  
 
 Many of the planned features are still being brainstormed, and more thought will be put in until the time comes. There is much work ahead :)
->>>>>>> b3cad8affb7491d1c58bc028c2284d54ab25a6b1
