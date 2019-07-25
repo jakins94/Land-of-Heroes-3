@@ -20,7 +20,7 @@ The purpose of this project was to try a new style of programming for the client
 
 This project includes a client and server. The server uses MongoDB to hold user account information and other data later on, such as stats for randomly generated items.
 
-#Current features include:  
+# Current features include:  
 -Multiplayer  
 -Playable on browser for desktop and mobile devices  
 -User account creation, loading and saving  
@@ -31,7 +31,7 @@ This project includes a client and server. The server uses MongoDB to hold user 
 -Map loading  
 -Map changing  
 
-#Future planned features:  
+# Future planned features:  
 -Player vs Player open world, full loot combat  
 -Loot generation  
 -Inventory and equipment systems  
