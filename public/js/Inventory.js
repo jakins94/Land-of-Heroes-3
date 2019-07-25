@@ -1,5 +1,5 @@
 // Inventory.js controls the character inventory UI
-//
+//test
 // inventory variables
 var inventoryOpen = false,
     invWidth = (this.game.camera.view.width / 3),
