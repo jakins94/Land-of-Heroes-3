@@ -13,6 +13,8 @@ var socket = io.connect('http://localhost:8080');
 //const SAFE_ZONE_WIDTH=800;
 //const SAFE_ZONE_HEIGHT=450;
 
+//test
+
 const SAFE_ZONE_WIDTH=800;
 const SAFE_ZONE_HEIGHT=600;
 
