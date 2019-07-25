@@ -211,7 +211,7 @@ function newEnemies(data) {
 		}, this);*/
 
 		var createEnemy = new Enemy(data[i], enemy);
-
+		//
 		enemies.push(createEnemy);
 
 		var barConfig = {
