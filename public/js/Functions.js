@@ -42,7 +42,7 @@ function startGame() {
 	if(socket.id && socket.id !== undefined) {
 		socket.emit('player connect', { id: socket.id, playerName: playerName, playerPass: playerPass });
 		console.log("Connected with " + socket.id)
-		clearInterval(startGameLoop);
+		//clearInterval(startGameLoop);
 	}
 }
 

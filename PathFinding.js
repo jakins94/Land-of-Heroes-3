@@ -24,6 +24,14 @@ PathFinding.generatePath = function(pid, x1, y1, x2, y2, mapId) {
 		diagonalMovement: PF.DiagonalMovement.OnlyWhenNoObstacles
 	});
 
+	if(x1 >= 100 || x1 <= 0 ||
+		y1 >= 100 || y1 <= 0 ||
+		y2 >= 100 || y2 <= 0 ||
+		x2 >= 100 || x2 <= 0) {
+		console.log('invalid path')
+	return;
+	}
+
 	var path = pfinder.findPath(x1, y1, x2, y2, grid);
 
 	return path;

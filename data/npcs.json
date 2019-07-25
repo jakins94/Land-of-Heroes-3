@@ -9,7 +9,7 @@
 	"stats" : {
 		"wanders" : true,
 		"level" : 1,
-		"maxhp" : 225,
+		"maxhp" : 50,
 		"damage" : 1,
 		"defense" : 1,
 		"attackspeed" : 900,

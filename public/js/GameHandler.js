@@ -32,7 +32,9 @@ function setGameHandlers() {
 					chatString = chatString.slice(0, -1);
 					input.blur();
 				}
-				socket.emit("chat message", {id: socket.id, text: chatString})
+				if(chatString != "") { // prevent sending blank messages
+					socket.emit("chat message", {id: socket.id, text: chatString})
+				}
 				isTyping = false;
 				chatString = "";
 				chatText.text = myName+": ";
@@ -63,6 +65,10 @@ function setGameHandlers() {
 				toggleFullscreen();
 			}
 
+			if(e.keyCode == Phaser.KeyCode.I) {
+				toggleInventory();
+			}
+
 			if(e.keyCode == Phaser.KeyCode.Z) {
 				changeMap("tilemap4", "cave", "tiles2");
 			}
@@ -72,7 +78,7 @@ function setGameHandlers() {
 
 	cursors = game.input.keyboard.createCursorKeys();
 
-	//game.input.onDown.add(onDown, this);
+	game.input.onDown.add(onDown, this);
 
 	// when playing on a mobile device, automatically toggle the fullscreen
 	if(!game.device.desktop) {
@@ -85,11 +91,11 @@ function setGameHandlers() {
 	game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 	game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
 
-	//game.scale.forceLandscape = true;
+	game.scale.forceLandscape = true;
 	game.scale.forceOrientation(true);
 
-	game.scale.pageAlignHorizontally = true;
-	//game.scale.pageAlignVertically = true;
+	//game.scale.pageAlignHorizontally = true;
+	game.scale.pageAlignVertically = true;
 	game.scale.refresh();
 
 	game.scale.windowConstraints.bottom = "visual";

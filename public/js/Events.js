@@ -7,11 +7,14 @@ var eventHandlers = function eventHandlers() {
 	socket.on('disconnect player', disconnectPlayer);
 	socket.on('player attack', playerAttack);
 	socket.on('player path', playerPath);
+	socket.on('player heal', playerHeal);
 
 	socket.on('new enemies', newEnemies);
 	socket.on('enemy attack', enemyAttack);
 	socket.on('enemy move', enemyMove);
 	socket.on('enemy path', enemyPath);
+	socket.on('enemy take damage', enemyTakeDamage);
+	socket.on('enemy heal', enemyHeal);
 
 
 	socket.on('chat message', chatMessage);

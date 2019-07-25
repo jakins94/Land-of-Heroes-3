@@ -4,15 +4,15 @@ var enemies = []; // local enemies
 function enemyLoop() {
 	for(var i=0;i<enemies.length;i++) {
 		var e = enemies[i];
-
-		if(typeof e.path != undefined && e.path != 0 && e.path != []) {
+		
+		if(Array.isArray(e.path) && e.path.length) {
 			if(!e.moving) {
 				e.moving = true;
 				e.destX = e.path[0][0] * 32;
 				e.destY = e.path[0][1] * 32;
 				enemyMoveTo(e.id, e.path[0][0], e.path[0][1]);
 			} else {
-				if(distance(e.sprite.x, e.sprite.y, e.movingX, e.movingY) <= 16) {
+				if(distance(e.sprite.x, e.sprite.y, e.movingX, e.movingY) <= 45) {
 					e.path.splice(0, 1);
 					enemyMoveTo(e.id, e.path[0][0], e.path[0][1]);
 				}
@@ -28,6 +28,27 @@ function enemyLoop() {
 			e.startAnimation('idle');
 		}
 
+		if(e.target != -1) {
+			var p = playerByPid(e.target);
+
+			if(p.sprite.body.x > e.sprite.body.x) {
+				e.sprite.scale.setTo(scaleRatio, scaleRatio);
+				e.direction = 1;
+			} else {
+				e.sprite.scale.setTo(-scaleRatio, scaleRatio);
+				e.direction = -1;
+			}
+		}
+
+		
+
+		if(e.destroyTimer > 0) {
+			e.destroyTimer--;
+		} else if(e.destroyTimer == 0) {
+			e.remove();
+			enemies.splice(i, 1);
+		}
+
 		if(!e.moving)
 			e.startAnimation('idle');
 
@@ -35,14 +56,40 @@ function enemyLoop() {
 	}
 }
 
+function enemyHeal(data) {
+	var e = enemyById(data.eid);
+	if(!e) return;
+
+	e.gotHealed(data.amount);
+}
+
+function enemyTakeDamage(data) {
+
+	var player 	= playerByPid(data.pid);
+	if(!player) return;
+	var	e 	= enemyById(data.eid);
+	if(!e) return;
+
+	var damage 	= data.damage,
+		type 	= data.type;
+
+	if(e.target == -1) {
+		e.target = data.pid;
+	}
+
+	e.gotHit(damage, player);
+
+}
+
 function enemyMoveTo(id, x, y) {
 
 	var e = enemyById(id);
+	if(!e) return;
 
 	e.movingX = x * 32;
 	e.movingY = y * 32;
 
-	game.physics.arcade.moveToXY(e.sprite, e.movingX, e.movingY, 250, 0); //240
+	game.physics.arcade.moveToXY(e.sprite, e.movingX, e.movingY, 350, 0); //240
 
 	if(e.destX > e.sprite.body.x) {
 		e.sprite.scale.setTo(scaleRatio, scaleRatio);
@@ -57,8 +104,6 @@ function enemyMoveTo(id, x, y) {
 function enemyPath(data) {
 	var e = enemyById(data.id);
 
-	console.log(data.path)
-
 	if(e) {
 		e.path = data.path;
 		e.target = data.target;
@@ -69,13 +114,14 @@ function enemyPath(data) {
 
 function enemyMove(data) {
 	var e = enemyById(data.id);
+	if(!e) return;
 
 	// change enemy's destination coords
 	e.destX = data.destX;
 	e.destY = data.destY;
 
 	// tells enemy to move
-	game.physics.arcade.moveToXY(e.sprite, e.destX, e.destY,250,0); //240
+	game.physics.arcade.moveToXY(e.sprite, e.destX, e.destY,150,0); //240
 
 	// changes enemy's facing direction
 	if(e.destX > e.sprite.body.x) {
@@ -91,7 +137,10 @@ function enemyMove(data) {
 function enemyAttack(data) {
 
 	var player = playerByPid(data.pid);
+	if(!player) return;
 	var enemy = enemyById(data.eid);
+	if(!enemy) return;
+
 	var damage = data.damage;
 
 	enemy.startAnimation('attack');
@@ -117,9 +166,20 @@ var enemyAnims =
 				"frames": [ 13, 12, 11, 10, 9 ],
 				"speed": 6,
 				"loop": false
+			},
+			"death": {
+				"frames": [ 3, 2, 1, 0, 0, 0 ],
+				"speed": 3,
+				"loop": false
 			}
 		}
 	};
+
+function playerSelectedEnemy(eid) {
+	myPlayer.target = eid;
+	console.log(myPlayer.target)
+	socket.emit("player vs enemy", { id: socket.id, target: myPlayer.target });
+}
 
 function newEnemies(data) {
 
@@ -142,11 +202,15 @@ function newEnemies(data) {
 
 		enemy.scale.setTo(scaleRatio, scaleRatio);
 		enemy.anchor.setTo(.5,.5);
-		group2.add(enemy);
+
+		/*
+		enemy.inputEnabled = true;
+		enemy.input.priorityID = 1; 
+		enemy.events.onInputDown.add(function() {
+			playerSelectedEnemy(data[i].id);
+		}, this);*/
 
 		var createEnemy = new Enemy(data[i], enemy);
-
-
 
 		enemies.push(createEnemy);
 
@@ -162,9 +226,11 @@ function newEnemies(data) {
     	}
 
 		createEnemy.newHealthBar(barConfig);
-		game.physics.arcade.enable(enemy);
-	}
 
-	console.log(enemies)
+		game.physics.arcade.enable(enemy);
+
+		group2.add(enemy);
+
+	}
 
 }

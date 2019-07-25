@@ -25,14 +25,17 @@ var Player = Class.extend({
 
 		this.animationIdle = true;
 
-		this.sprite.x = data.destX;
-		this.sprite.y = data.destY;
+		this.sprite.x = data.x;
+		this.sprite.y = data.x;
 
-		this.movingX = data.destX;
-		this.movingY = data.destY;
+		//this.sprite.body.x = data.x;
+		//this.sprite.body.y = data.x;
 
-		this.destX = data.destX;
-		this.destY = data.destY;
+		this.movingX = data.x;
+		this.movingY = data.x;
+
+		this.destX = data.x;
+		this.destY = data.x;
 
 		this.lastAttack = -1;
 
@@ -45,7 +48,7 @@ var Player = Class.extend({
 		this.gotHit = function(damage, enemy) {
 			this.HP -= damage;
 
-			var damageText = game.add.text(0, 0, damage, style);
+			var damageText = game.add.text(0, 0, damage, style4);
 			group1.add(damageText);
 			damageText.setShadow(1, 1, 'rgba(0,0,0,1)', 0);
 			damageText.resolution = 1;
@@ -56,14 +59,34 @@ var Player = Class.extend({
 			this.hitArray.push(hit);
 		};
 
+		this.gotHealed = function(amount) {
+			if(this.HP == this.maxHP) return;
+			
+			if(this.HP + amount >= this.maxHP)
+				amount = this.maxHP - this.HP;
+
+			this.HP += amount;
+
+			var healText = game.add.text(0, 0, amount, style5);
+			group1.add(healText);
+			healText.setShadow(1, 1, 'rgba(0,0,0,1)', 0);
+			healText.resolution = 1;
+			healText.x = this.sprite.body.x + (this.sprite.body.width / 2);
+
+			var hit = [healText, 2];
+
+			this.hitArray.push(hit);
+		};
+
 		this.stop = function() {
 
 			this.sprite.body.velocity.x = 0;
 			this.sprite.body.velocity.y = 0;
-			if(!sprite.animations.currentAnim.isPlaying || sprite.animations.currentAnim.loop) {
-				this.sprite.frame = 0;
-				this.sprite.animations.stop();
-			}
+			/*if(!sprite.animations.currentAnim.isPlaying || sprite.animations.currentAnim.loop) {
+				//this.sprite.frame = 0;
+				//this.sprite.animations.stop();
+			}*/
+			this.startAnimation("idle");
 		};
 
 		this.startAnimation = function(aName) {
@@ -82,18 +105,6 @@ var Player = Class.extend({
 				} else {
 					this.stop();
 				}
-		};
-
-		this.getHit = function(damage, id) {
-			var attacker = enemyById(id);
-			if(attacker) {
-
-			}
-			this.HP -= damage;
-			var hitLength = this.hitArray.length;
-			var theText = game.add.text(this.sprite.x, this.sprite.y, ""+damage, { font: "12px Arial Black", fill: "red" });
-			var newHit = [theText, 10];
-			this.hitArray.push(newHit);
 		};
 
 		this.addXP = function(amount) {
@@ -119,10 +130,20 @@ var Player = Class.extend({
 
 		//Phaser.Text.prototype.defuzz = function () {            var _this = this;            setImmediate(function () {                var dx = _.round(_this.worldPosition.x) - _this.worldPosition.x;                var dy = _.round(_this.worldPosition.y) - _this.worldPosition.y;                _this.x += dx;                _this.y += dy;            });        };
 
-		var style = { font: "16px Impact", fill: "#ff0044", /*wordWrap: true, wordWrapWidth: sprite.width,*/ align: "center" };
+		// friendly name text
+		var style = { font: "16px Impact", fill: "#0bdb04", align: "center" };
 
+		// chat text
 		var style2 = { font: "16px Impact", fill: "#74c61a", wordWrap: true, wordWrapWidth: sprite.width * 5, align: "center" };
-		//var style3 = { font: "12px Impact", fill: "black", wordWrap: true, wordWrapWidth: sprite.width * 5, align: "center" };
+		
+		// enemy name text
+		var style3 = { font: "16px Impact", fill: "#ff0044", align: "center" };
+
+		// damage text
+		var style4 = { font: "14px Impact", fill: "#ff0044", align: "center" };
+
+		// heal text
+		var style5 = { font: "14px Impact", fill: "#36ff00", align: "center" };
 
 
 		var nameText = game.add.text(0, 0, this.name, style);

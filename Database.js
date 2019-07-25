@@ -8,6 +8,7 @@ Database.init = function() {
 	var MongoClient = require('mongodb').MongoClient;
 
 	var url = "mongodb://myUserAdmin:abc123@127.0.0.1:27017/test";
+	//var url = "mongodb://admin:Testabcd2@127.0.0.1:27017/test";
 	MongoClient.connect(url, function(err, db) {
 	  if (err) throw err;
 	  Database.db = db.collection('player');
@@ -15,34 +16,43 @@ Database.init = function() {
 }
 
 Database.SavePlayer = function(key){
+
 	var player = key;
-	player = Database.Saveplayercompress(player);
-   // var toSave = ['playerName','playerPass','x','absX','y','absY','maxhp','money'];
-   // var save = {};
-   var save = player;
-    var i;
-    //for(var i in toSave){	save[toSave[i]] = player[toSave[i]]; console.log(save[toSave[i]]); }
-	
-   // if(updateDb !== false) db.update('player',{username:player.username},save,db.err);
-	Database.update('player',{playerName:player.name},save,Database.err);
-	//DB.update('player',{username:player.playerName},save);
-   //	return save;	//when sign up
+	var strippedPlayer = Database.savePlayerCompress(player);
+
+	Database.update('player',{name: player.name.toLowerCase}, strippedPlayer, Database.err);
+
 }
 
-Database.Saveplayercompress = function(p){
-	//p = deepClone(p);
+// compress player data before it enters the database
+// delete unnecessary data when saving
+Database.savePlayerCompress = function(p){
 
 	p.x = Math.round(p.x);
-	p.absX = Math.round(p.absX);
 	p.y = Math.round(p.y);
-	p.absY = Math.round(p.absY);
+
+	p.name = p.name.toLowerCase();
+
+	delete p.pid;
+	delete p.id;
+	delete p.attackRange;
+	delete p.movingX;
+	delete p.movingY;
+	delete p.destX;
+	delete p.destY;
+	delete p.path;
+	delete p.moving;
+	delete p.fighting;
+	delete p.fightTimer;
+	delete p.attackTimer;
+	delete p.target;
+	delete p.lastHeartBeat;
 	
     return p;
 }
 
 Database.update = function(name,searchInfo,updateInfo,cb){
-	if(arguments.length === 3) return Database.db.player.update(searchInfo,updateInfo);
-	else return Database.db.update(searchInfo,updateInfo,cb);
+	Database.db.update(searchInfo, updateInfo);
 }
 
 //Old auto-reconnect

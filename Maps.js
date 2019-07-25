@@ -81,7 +81,6 @@ Maps.initMaps = function() {
 				if(name[x][y] != 359) {
 					collisionMapN[x][y] = 0;
 				} else if(name[x][y] == 359) {
-					console.log('1')
 					collisionMapN[x][y] = 1;
 				}
 			}

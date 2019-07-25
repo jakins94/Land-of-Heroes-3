@@ -20,6 +20,7 @@ var Enemy = Class.extend({
 		this.alive = true;
 		this.attackSpeed = 750;
 		this.healthBar = null;
+		this.destroyTimer = -1;
 
 		this.sprite = sprite;
 
@@ -29,18 +30,24 @@ var Enemy = Class.extend({
 
 		this.newHealthBar = function(config) {
 			this.healthBar = new HealthBar(game, config);
-			group1.add(this.healthBar.bgSprite);
-			group1.add(this.healthBar.barSprite);
+			group2.add(this.healthBar.bgSprite);
+			group2.add(this.healthBar.barSprite);
 		};
 
-		var style = { font: "16px Impact", fill: "#ff0044", /*wordWrap: true, wordWrapWidth: sprite.width,*/ align: "center" };
+		// name text
+		var style = { font: "16px Impact", fill: "#ff0044", align: "center" };
 
+		// chat text
 		var style2 = { font: "16px Impact", fill: "#74c61a", wordWrap: true, wordWrapWidth: sprite.width * 5, align: "center" };
-		//var style3 = { font: "12px Impact", fill: "black", wordWrap: true, wordWrapWidth: sprite.width * 5, align: "center" };
 
+		// damage text
+		var style3 = { font: "12px Impact", fill: "#ff0044", align: "center" };
+
+		// heal text
+		var style5 = { font: "14px Impact", fill: "#36ff00", align: "center" };
 
 		var nameText = game.add.text(0, 0, this.name, style);
-		group1.add(nameText);
+		group2.add(nameText);
 		nameText.setShadow(1, 1, 'rgba(0,0,0,1)', 0);
 		nameText.resolution = 1;
 		nameText.anchor.set(.5);
@@ -52,9 +59,34 @@ var Enemy = Class.extend({
 		//var chatText2 = game.add.text(0, 0, "", style3);
 
 		this.startAnimation = function(aName) {
-			if(!sprite.animations.currentAnim.isPlaying || sprite.animations.currentAnim.loop) {
+			if(!this.sprite.body) return;
+
+			if(((!sprite.animations.currentAnim.isPlaying || sprite.animations.currentAnim.loop)
+				&& (!sprite.animations.currentAnim.name != "death"))
+				|| aName == "death") {
 				var myAnim = this.sprite.animations.play(aName);
 			}
+		};
+
+		this.gotHealed = function(amount) {
+
+			if(this.HP == this.maxHP) return;
+			
+			if(this.HP + amount >= this.maxHP)
+				amount = this.maxHP - this.HP;
+
+			this.HP += amount;
+
+			var healText = game.add.text(0, 0, amount, style5);
+			group1.add(healText);
+			healText.setShadow(1, 1, 'rgba(0,0,0,1)', 0);
+			healText.resolution = 1;
+			healText.x = this.sprite.body.x + (this.sprite.body.width / 2);
+			healText.y = this.sprite.body.y;
+
+			var hit = [healText, 2];
+
+			this.hitArray.push(hit);
 		};
 
 		this.draw = function() {
@@ -68,6 +100,15 @@ var Enemy = Class.extend({
 			nameText.x = Math.floor(this.sprite.body.x + this.sprite.body.width / 2);
 			nameText.y = Math.floor(this.sprite.body.y - 18);
 
+			if(this.destroyTimer != -1) {
+				var newAlpha = this.destroyTimer * .1;
+				if(newAlpha > 1) newAlpha = 1;
+				if(newAlpha < 0.5) newAlpha = 0.5;
+				nameText.alpha = newAlpha;
+				this.sprite.alpha = newAlpha;
+				this.healthBar.setAlpha(newAlpha);
+			}
+
 			chatText.x = Math.floor(this.sprite.body.x + this.sprite.body.width / 2);
 			chatText.y = Math.floor(this.sprite.body.y - 30);
 
@@ -80,7 +121,7 @@ var Enemy = Class.extend({
 
 			for(var i=0;i<this.hitArray.length;i++) {
 				this.hitArray[i][1]*=1.05;
-				this.hitArray[i][0].y = this.sprite.body.y - this.hitArray[i][1];
+				this.hitArray[i][0].y -= this.hitArray[i][1] / 20;
 				this.hitArray[i][0].alpha = 1 - (this.hitArray[i][1] / 100);
 				if(this.hitArray[i][1] > 100) {
 					this.hitArray[i][0].destroy();
@@ -98,76 +139,45 @@ var Enemy = Class.extend({
 		};
 
 		this.gotHit = function(damage, player) {
-			this.HP -= damage;
 
-			var damageText = game.add.text(0, 0, damage, style);
-			group1.add(damageText);
-			damageText.setShadow(1, 1, 'rgba(0,0,0,1)', 0);
-			damageText.resolution = 1;
-			damageText.x = this.sprite.body.x + (this.sprite.body.width / 2);
+			if(this.alive) {
+				this.HP -= damage;
 
-			var hit = [damageText, 2];
+				var damageText = game.add.text(0, 0, damage, style3);
+				group1.add(damageText);
+				damageText.setShadow(1, 1, 'rgba(0,0,0,1)', 0);
+				damageText.resolution = 1;
+				damageText.x = this.sprite.body.x + (this.sprite.body.width / 2);
+				damageText.y = this.sprite.body.y;
 
-			this.hitArray.push(hit);
+				var hit = [damageText, 2];
+
+				this.hitArray.push(hit);
+
+				if(this.HP <= 0) {
+					this.die();
+				}
+			}
+
 		};
 
-		this.onDeath = function() {
-			this.name = 'Dead';
+		this.die = function() {
+			this.startAnimation("death");
 			this.alive = false;
-			this.fighting = false;
 			this.target = -1;
+			this.destroyTimer = 15;
 		};
 
-		this.draw2 = function(ctx, bgX, bgY) {
-
-			//ctx.fillStyle = 'red';
-			//ctx.fillRect(this.x+bgX-16, this.y+bgY-16, 32, 32);
-			ctx.drawImage(this.sprite, this.x+bgX-48, this.y+bgY-48);
-
-			ctx.fillStyle = 'red';
-			ctx.fillRect(this.x+bgX-38, this.y+bgY+18, 48 * (this.hp / this.maxhp), 3);
-			ctx.strokeStyle = '#000';
-			ctx.strokeRect(this.x+bgX-38, this.y+bgY+18, 48, 3);
-
-			ctx.fillStyle = '#000';
-			ctx.textAlign = 'center';
-			ctx.font = 'bold 15px Arial';
-			ctx.fillStyle = '#000';
-			ctx.fillText(this.name, this.x+bgX-15, this.y+bgY-39);
-			ctx.fillStyle = '#e6e6e6';
-			ctx.fillText(this.name, this.x+bgX-16, this.y+bgY-40);
-
-			ctx.fillStyle = 'orange';
-			ctx.strokeStyle = 'black';
-
-			for(let i=0;i<this.hitArray.length;i++) {
-				ctx.save();
-				this.hitArray[i][1] = this.hitArray[i][1] * 1.090;
-				this.hitArray[i][2] = this.hitArray[i][2] * 1.125;
-				this.hitArray[i][3] = this.hitArray[i][3] * 1.055;
-				console.log(this.hitArray[i][1], this.hitArray[i][2], this.hitArray[i][3]);
-				ctx.globalAlpha = 1 - (this.hitArray[i][2] / 1000);
-				ctx.font = 'bold 30px Acknowledge';
-				ctx.fillText(this.hitArray[i][0], this.x+bgX-16 + this.hitArray[i][3], this.y+bgY - this.hitArray[i][1]);
-				ctx.font = '30px Acknowledge';
-				ctx.strokeText(this.hitArray[i][0], this.x+bgX-16 + this.hitArray[i][3], this.y+bgY - this.hitArray[i][1]);
-				ctx.restore();
-
-				/*if(this.hitArray[i][1] / 1000 >= 1)
-					this.hitArray.splice(i, 1);*/
-
-					if(this.hitArray[i][2] / 950 >= 1)
-						delete this.hitArray[i];
+		this.remove = function() {
+			this.stop();
+			nameText.destroy();
+			this.healthBar.kill();
+			for(var i=0;i<this.hitArray.length;i++) {
+				this.hitArray[i][0].destroy();
 			}
-
-			for(let i=0;i<this.hitArray.length;i++) {
-				if(typeof this.hitArray[i] == "undefined")
-					this.hitArray.splice(i, 1);
-			}
-
+			this.sprite.destroy();
 		};
 
-		//this.spriteId = spriteId;
 	}
 
 });

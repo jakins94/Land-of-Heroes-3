@@ -5,6 +5,7 @@ var Enemy = rootRequire('Enemy');
 
 	Enemy.init = function(x, y, data, id, mapId) {
 		this.mapId = mapId;
+		this.spawnerId = -1;
 		this.name = data.name;
 		this.spriteName = data.spriteName;
 		this.id = id;
@@ -12,6 +13,8 @@ var Enemy = rootRequire('Enemy');
 		this.hp = data.stats.maxhp;
 		this.x = x;
 		this.y = y;
+		this.startX = x;
+		this.startY = y;
 		this.movingX = x;
 		this.movingY = y;
 		this.destX = x;

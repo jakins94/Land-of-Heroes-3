@@ -1,0 +1,13 @@
+[
+
+{
+	"id": 257,
+	"name": "Slime",
+	"stats" : {
+		"minSpawn" : 2,
+		"maxSpawn" : 4,
+		"respawn" : 180000
+	}
+}
+
+]

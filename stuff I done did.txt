@@ -1,0 +1,66 @@
+TO DO
+
+Critical
+
+-Finish maps
+
+
+**** First priority ****
+
+	--- Enemies ---
+	-NPC List/Loading
+	-NPC death
+	-NPC SPAWNERS	
+
+	--- Pathing ---
+	-Smooth Player pathing client side
+	-Smooth Enemy pathing client side
+	-Player is overshooting their destination and cannot be calculated (client pathfinding)
+
+
+
+---- Second priority ----
+	--- Players ---
+	-Exp/Levelling system
+	--- Enemies ---
+	-Turn Enemies into dimensional array based on map ID
+	--- Maps ---
+	-Fix Maps/Map ID issues
+
+Eventually
+-Save players when they perform an action i.e. pick up item or trade
+-Paths only need to be given to nearby players
+-Enemies and players should only appear for nearby players and checked periodically for updates
+
+*** PvP Function Ideas ***
+
+	Zones:
+	-Blue zone: No PvP
+	-Yellow zone: Safe PvP, durability loss
+	-Red zone: Lose some items
+	-Black zone: Lose all items
+
+*** Future Ideas ***
+
+	- Add voice chat
+
+	-Towns/Guards
+	-Hardcore characters
+	-Pets. Magic, Physical damage
+		-Pet level ups
+		-Pet equipment. Item collection, auto potions etc.
+
+*** Random ***
+
+*** Names ***
+Starry Knight Interactive (SKI)
+
+
+Finished:
+
+-enemy animations (mostly)
+https://youtu.be/HU-R4zAPn8c
+
+
+*** Game Reviews ***
+- Joshua Flake - 120K subscribers (said to email him) (free?)

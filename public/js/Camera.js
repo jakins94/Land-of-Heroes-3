@@ -32,10 +32,25 @@ function cameraFollow() {
 	}
 }
 
+var size = new Phaser.Rectangle();
+
 function createCamera() {
 
 	var edge = 150;
 	var edgeY = 100;
+
+	/*size.setTo(0, 0, 3200, 3200);
+
+	game.camera.scale.x = 2;
+    game.camera.scale.y = 2;
+
+    game.camera.bounds.x = size.x * game.camera.scale.x;
+    game.camera.bounds.y = size.y * game.camera.scale.y;
+    game.camera.bounds.width = size.width * game.camera.scale.x;
+    game.camera.bounds.height = size.height * game.camera.scale.y;*/
+
+
+	//game.camera.deadzone = new Phaser.Rectangle(edge, edgeY, game.camera.width - edge*2, game.camera.height - edgeY*2);
 	game.camera.deadzone = new Phaser.Rectangle(edge, edgeY, game.camera.width - edge*2, game.camera.height - edgeY*2);
 	edge = 50;
 	cameraDeadzone = new Phaser.Rectangle(edge, edge, game.camera.width - edge*2, game.camera.height - edge*2);

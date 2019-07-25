@@ -31,6 +31,7 @@ function onDown() {
 
 // when a player presses chat button
 function openChat() {
-		input.focus();
+		inputBox.focus();
+		inputBox.click();
 		isTyping = true;
 }

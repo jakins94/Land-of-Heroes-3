@@ -88,6 +88,11 @@ HealthBar.prototype.kill = function() {
     this.barSprite.kill();
 };
 
+HealthBar.prototype.setAlpha = function(alpha) {
+    this.bgSprite.alpha = alpha;
+    this.barSprite.alpha = alpha;
+}
+
 HealthBar.prototype.drawHealthBar = function() {
     var bmd = this.game.add.bitmapData(this.config.width, this.config.height);
     bmd.ctx.fillStyle = this.config.bar.color;

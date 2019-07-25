@@ -9,6 +9,7 @@ function createWorld() {
 	bg.inputEnabled = true;
 	bg.input.priorityID = 0; // lower priority
 	bg.events.onInputDown.add(onDown, this);
+    group1.add(bg);
 
 	game.time.deltaCap = 0.025;
 
@@ -37,17 +38,24 @@ function createWorld() {
 
     map.addTilesetImage('mountain', 'tiles3');
     
-    groundLayer = map.createLayer('ground');
-    groundLayer.enableScrollDelta = false;
-    layer1 = map.createLayer('layer1');
-    layer1.enableScrollDelta = false;
+    test = map.createBlankLayer('test', 100, 100, 32, 32);
+    test.enableScrollDelta = true;
+    test.resizeWorld();
+
+    //groundLayer = map.createLayer('ground');
+    //groundLayer.enableScrollDelta = true;
+    //groundLayer.resizeWorld();
+    //groundLayer.scale.set(2);
+    //groundLayer.resizeWorld();
+    /*layer1 = map.createLayer('layer1');
+    layer1.enableScrollDelta = true;
     layer2 = map.createLayer('layer2');
-    layer2.enableScrollDelta = false;
+    layer2.enableScrollDelta = true;
     layer3 = map.createLayer('layer3');
-    layer3.enableScrollDelta = false;
+    layer3.enableScrollDelta = true;
     objectLayer = map.createLayer('objects');
-    objectLayer.enableScrollDelta = false;
+    objectLayer.enableScrollDelta = true;
     group1.add(objectLayer);
-    objectLayer.resizeWorld();
+    objectLayer.resizeWorld();*/
 
 }

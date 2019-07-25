@@ -1,6 +1,10 @@
+// Chat.js controls the chat UI that is displayed on-screen
+
+var chatAlpha = 0.4;
+
 function chatMessage(data) {
 	var p = playerByPid(data.pid);
-	console.log(data.text)
+
 	p.newMessage(data.text);
 
 	chatBoxMessage(data.text, p.name);
