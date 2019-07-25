@@ -83,7 +83,7 @@ $("#pName").html(playerName);
 $("#pPass").html(playerPass);
 
 function preload() {
-
+//test
     this.game.stage.disableVisibilityChange = true;
 
 	//game.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
